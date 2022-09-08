@@ -1,0 +1,650 @@
+@use "sass:math";
+
+// Подключение миксинов ===========================================================================================================================================================================================================================================================================
+@import "base/mixins";
+
+// Подключение шрифтов ===========================================================================================================================================================================================================================================================================
+//&display=swap - добавить при подключении через плагин
+
+// Подключить если есть локальные файлы шрифтов
+//@import "fonts/fonts";
+
+// Подключение иконочных шрифтов ==============================================================================================================================================================================================================================================================================
+// Подключить если есть файл иконочного шрифта
+//@import "fonts/icons";
+
+// Шрифт по умолчанию ==============================================================================================================================================================================================================================================================================
+$fontFamily: "";
+$fontSize: rem(14); // где 14(px) - размер шрифта по умолчанию из макета
+
+// Основные цвета
+$mainColor: #000; // Цвет шрифта по умолчанию
+
+// НАСТРОЙКИ ===============================================================================================================================================================================================================================================================================================
+// Минимальная ширина страницы
+$minWidth: 320;
+// Ширина полотна (макета)
+$maxWidth: 1920;
+// Ширина ограничивающего контейнера (0 = нет ограничения)
+$maxWidthContainer: 1170;
+// Общий отступ у контейнера
+// (30 = по 15px слева и справа, 0 = нет отступа)
+$containerPadding: 30;
+
+// Ширина срабатывания первого брейкпоинта
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// Брейк-поинты
+$pc: em($containerWidth); // ПК, ноутбуки, некоторые планшеты в горизонтальном положении
+$tablet: em(991.98); // Планшеты, некоторые телефоны в горизонтальном положении
+$mobile: em(767.98); // Телефоны L
+$mobileSmall: em(479.98); // Телефоны S
+
+// Тип адаптива:
+// 1 = отзывчивость (у контейнера нет брейкпоинтов),
+// 2 = по брейк-поинтам (контейнер меняет свою ширину по брейк-поинтам)
+$responsiveType: 1;
+
+// Обнуление и общие параметры ============================================================================================================================================================================================== =============================================================================================== ===============================================================================================
+@import "base/null";
+
+body {
+	// Скролл заблокирован
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+	}
+	// Сайт загружен
+	.loaded & {
+	}
+}
+// Оболочка ============================================================================================================================================================================================================================================================================================================================================================================================================================================
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	// Прижимаем footer
+	> main {
+		flex: 1 1 auto;
+	}
+	// Фикс для слайдеров
+	> * {
+		min-width: 0;
+	}
+}
+// Ограничивающий контейнер ======================================================================================================================================================================================================================
+
+/*
+(i) Стили будут применяться ко 
+всем классам содержащим *__container
+Например header__container, main__container и т.д.
+Снипет (HTML): cnt
+*/
+@if ($responsiveType==1) {
+	// Отзывчивая
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			padding: 0 rem(math.div($containerPadding, 2));
+		}
+	}
+} @else {
+	// По брейк-поинтам
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Подключение базовых стилей, шаблонов (заготовок) и вспомогательных  классов
+// Для подключения/отключения конкретных стилей смотри base.scss
+@import "base";
+
+// Подключение стилей общих элементов проекта
+@import "common";
+
+// Подключение стилей отдельных блоков
+@import "header";
+@import "footer";
+
+// Подключение стилей отдельных страниц
+@import "home";
+
+
+
+
+@import 'vars';
+@import 'fonts';
+@import 'reset';
+@import 'libs';
+@import 'global';
+
+
+
+.main-screen {
+    // background: url(../images/bg.png);
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    //тожесамое что и строчка ниже
+    // flex: 1 0 100%;
+
+}
+
+.header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85px;
+    top: 35px;
+    z-index: 3;
+
+    &__row {
+        // position: relative;
+    }
+
+    &__logo {
+        position: absolute;
+        top: 0;
+        z-index: 3;
+    }
+    
+    &__menu {}
+
+    &__menu-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 64px;
+    }
+
+    &__menu-item {
+        position: relative;
+
+        &:nth-child(2) {
+            margin-right: 110px;
+        }
+
+        &:nth-child(3) {
+            margin-left: 110px;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &:nth-child(1) {
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &:nth-child(4) {}
+
+        &::after {
+            position: absolute;
+            content: "";
+            top: 50%;
+            right: 82px;
+            height: 3px;
+            width: 3px;
+            background-color: #4d4959;
+            border-radius: 50%;
+        }
+
+
+    }
+
+    &__menu-link {
+
+        font-family: Lato;
+        font-size: 13px;
+        line-height: 1.2;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #4d4959;
+    }
+}
+
+@media(max-width: 767px) {
+
+    .menu-icon {
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 18px;
+        cursor: pointer;
+        top: 30px;
+        right: 30px;
+        z-index: 5;
+    }
+
+    .menu-icon._active-b {
+        span {
+            transform: scale(0) translate(0, -50%);
+        }
+
+        &::before {
+            top: 50%;
+            transform: rotate(-45deg) translate(0, -50%);
+
+        }
+
+        &::after {
+            bottom: 50%;
+            transform: rotate(45deg) translate(0, 50%);
+
+        }
+
+    }
+
+    .menu-icon span {
+        transition: all 0.3s ease 0s;
+        left: 0;
+        position: absolute;
+        height: 10%;
+        width: 100%;
+        transition: all .5s ease 0s;
+        background-color: #64c29e;
+        transform: scale(1) translate(0, -50%);
+        top: 50%;
+    }
+
+    .menu-icon::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 10%;
+        background-color: #64c29e;
+        top: 0px;
+        transition: all 0.5s ease 0s;
+
+
+    }
+
+    .menu-icon::after {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 10%;
+        background-color: #64c29e;
+        bottom: 0;
+        transition: all 0.5s ease 0s;
+
+    }
+
+
+
+    .header {
+        top: 15px;
+    }
+
+    .header__menu._active {
+        top: 0 !important;
+
+    }
+
+    .header__menu {
+        transition: all 0.3s ease 0s;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: -100%;
+        left: 0;
+        background-color: #4d4959;
+        opacity: .98;
+        padding-top: 150px;
+        overflow: auto;
+        transition: all .3 ease 0s;
+    }
+
+    .header__menu-link {
+        color: aliceblue;
+        font-size: 20px;
+    }
+
+    .header__menu-item {
+        margin: 0 !important;
+
+        &::after {
+            position: absolute;
+            content: "";
+            top: -73%;
+            right: 39px;
+            height: 3px;
+            width: 3px;
+            background-color: #ffff;
+            border-radius: 50%;
+        }
+
+        &:nth-child(3) {
+            &::after {
+                position: absolute;
+                content: "";
+                top: -73%;
+                right: 64px;
+                height: 3px;
+                width: 3px;
+                background-color: #ffff;
+                border-radius: 50%;
+                display: block;
+            }
+        }
+    }
+
+    .header__menu-list {
+        flex-direction: column;
+        z-index: -4;
+        align-items: center;
+        gap: 0px;
+        gap: 35px;
+    }
+}
+
+.block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 35px;
+    padding: 117px 0 70px;
+
+    &__title {
+        font-family: Lato;
+        font-size: 18px;
+        line-height: 1.2;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #353738;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    &__text {
+        font-size: 18px;
+        line-height: 34px;
+        font-weight: 400;
+        color: #848789;
+
+        &_j {
+            text-align: justify;
+            font-size: 16px;
+            line-height: 30px;
+            font-weight: 400;
+            color: #848789;
+            padding-top: 15px;
+
+
+            &::after {
+                content: "";
+                display: block;
+                margin: 35px auto 0 auto;
+                width: 50px;
+                height: 1px;
+                background-color: rgba(53, 55, 56, 0.2);
+            }
+        }
+    }
+}
+
+.generation {
+    background-color: #f7f7f7;
+ 
+     &__logo {
+
+            img{
+                box-shadow: 8px 10px 8px 0px rgba(34, 60, 80, 0.2);
+                max-height: 760px;
+            }
+        }
+    @media (max-width: 1000px) {
+        
+        &__logo {
+
+            img{
+                height: 500px;
+            }
+        }
+    }
+
+    @media(max-width: 767px) {
+        .container {
+            padding: 30px;
+        }
+
+        .generation__block {
+            padding: 60px 0 60px;
+        }
+    }
+
+    @media(max-width: 550px) {
+        &__logo {
+
+            img{
+                height: auto;
+            }
+        }
+
+        .generation__block {
+            padding: 20px 0 20px;
+        }
+    }
+}
+
+.brands {
+ 
+    
+
+
+    &__rew {
+
+        .brands__column-b {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            img{
+                box-shadow: 47px 50px 11px 4px rgba(34, 60, 80, 0.22);
+
+            }
+        }
+        
+        .brands__image {
+            
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+    }
+
+    @media (max-width: 1500px) {
+
+        &__content {
+            padding: 40px 30px 30px 35px !important;
+        }
+    }
+
+    @media (max-width: 1000px) {
+
+        &__3-1 {
+            padding-bottom: 50%;
+        }
+
+        &__3-2 {
+            padding-bottom: 50%;
+        }
+
+
+        &__row {
+            flex-direction: column;
+        }
+
+        &__column-b {
+         
+         
+           
+        }
+
+    }
+
+    &__row {
+        display: flex;
+    }
+
+    &__column {
+        // flex: 0 1 33.333%;
+        align-items: center;
+        display: flex;
+    }
+
+    &__column-b {
+      
+        flex: 0 1 66.667%;
+        margin: 30px;
+        img{
+            height: 500px;
+            object-fit: cover;
+
+        }
+    }
+
+    &__item {}
+
+    &__content {
+
+        padding: 32px 57px 70px 57px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        &::after {
+            position: absolute;
+            bottom: -10px;
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ffff;
+            z-index: 3;
+        }
+    }
+
+    &__content-text {
+        flex: 0 1 66.667%;
+    }
+
+    &__column-b {
+      
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+       
+
+        &:hover {
+            .item__logo {
+                opacity: 1;
+                visibility: visible;
+                transition: all .6s;
+            }
+        }
+    }
+}
+
+.item {
+    height: 100%;
+    display: block;
+
+    &__logo {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        background-color: rgba(100, 194, 158, 0.5);
+        opacity: 0;
+        visibility: hidden;
+
+    }
+}
+
+.slider {
+    padding: 180px 0 60px 0;
+    background-color: #f7f7f7;
+
+    &__body {}
+
+    &__item {
+        text-align: center;
+    }
+
+    &__icon {
+        margin: 0 0 35px 0;
+
+    }
+
+    &__title {
+        margin: 0 0 20px 0;
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #353738;
+
+        span {
+            font-weight: 300;
+            color: #848789;
+            font-size: 18px;
+        line-height: 1.2;
+        }
+
+    }
+
+    &__text {
+        text-align: center;
+        font-size: 24px;
+        line-height: 34px;
+        font-weight: 400;
+        font-style: italic;
+        color: #848789;
+    }
+}

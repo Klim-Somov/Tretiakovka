@@ -1,0 +1,32 @@
+html,
+body {
+	height: 100%;
+	font-family: Lato;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+.main {
+	flex: 1 0 auto;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.footer {
+	flex: 0 0 auto;
+}
+
+.container {
+	max-width: 1130px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
